@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import SiteBackground from './components/SiteBackground';
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: 'Daniel Njama – Full Stack Developer',
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteBackground />
         <a href="#main" className="sr-only focus-visible">Skip to content</a>
         {children}
+        <Analytics />
       </body>
     </html>
   );
