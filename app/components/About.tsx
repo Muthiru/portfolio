@@ -14,7 +14,7 @@ export default function About() {
         <div>
           <div className="about-text">
             <p>
-              I completed my BSc in Computer Science in Poland in June 2026 and build the kind of
+              I completed my BSc in Computer Science in Poland and build the kind of
               portfolio that shows how I think, not just which tools I have used. My path has been
               practical: at PRIOT Digital Systems, I moved from intern to part‑time developer after
               shipping production work on SaaS workflows, API integrations, billing, and document
