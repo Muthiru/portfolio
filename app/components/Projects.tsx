@@ -143,6 +143,11 @@ export default function Projects() {
                   {githubIcon}
                   GitHub
                 </a>
+                {project.demoUrl && (
+                  <a href={project.demoUrl} className="project-link" target="_blank" rel="noopener noreferrer">
+                    Live demo
+                  </a>
+                )}
               </div>
             </div>
           </article>
