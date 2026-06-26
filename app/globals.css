@@ -1605,6 +1605,33 @@ h2 {
   opacity: 0.75;
 }
 
+.form-error {
+  display: block;
+  margin-top: 6px;
+  color: var(--danger);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.form-input.error,
+.form-textarea.error {
+  border-color: var(--danger);
+}
+
+.form-input.error:focus,
+.form-textarea.error:focus {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(248, 81, 73, 0.1);
+}
+
+.contact-form-header .text-success {
+  color: var(--accent2);
+}
+
+.contact-form-header .text-error {
+  color: var(--danger);
+}
+
 footer {
   padding: 2rem;
   border-top: 1px solid var(--border);
