@@ -1,5 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import SiteBackground from './components/SiteBackground';
 import { Analytics } from "@vercel/analytics/next";
 
@@ -21,10 +22,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/favicon.svg" />
       </head>
       <body suppressHydrationWarning>
-        <SiteBackground />
-        <a href="#main" className="sr-only focus-visible">Skip to content</a>
-        {children}
-        <Analytics />
+        <ErrorBoundary>
+          <SiteBackground />
+          <a href="#main" className="sr-only focus-visible">Skip to content</a>
+          {children}
+          <Analytics />
+        </ErrorBoundary>
       </body>
     </html>
   );
