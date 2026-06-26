@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { Project, projects } from '../data/projects';
+import { trackEvent, AnalyticsEvents } from '@/app/lib/analytics';
 
 const filters = [
   { label: 'Latest', value: 'latest' },
@@ -136,10 +137,19 @@ export default function Projects() {
                 ))}
               </div>
               <div className="spotlight-actions">
-                <button className="project-link project-link-button" type="button" onClick={() => setActiveProject(project)}>
+                <button className="project-link project-link-button" type="button" onClick={() => {
+                  trackEvent(AnalyticsEvents.PROJECT_CLICK, { project: project.name, location: 'spotlight' });
+                  setActiveProject(project);
+                }}>
                   Case study
                 </button>
-                <a href={project.repoUrl} className="project-link" target="_blank" rel="noopener noreferrer">
+                <a 
+                  href={project.repoUrl} 
+                  className="project-link" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  onClick={() => trackEvent(AnalyticsEvents.GITHUB_CLICK, { project: project.name })}
+                >
                   {githubIcon}
                   GitHub
                 </a>

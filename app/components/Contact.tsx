@@ -1,5 +1,6 @@
 "use client";
 import { useState, FormEvent, ChangeEvent } from 'react';
+import { trackEvent, AnalyticsEvents } from '../lib/analytics';
 
 type FormStatus = 'idle' | 'sending' | 'success' | 'error' | 'validation-error';
 
@@ -36,6 +37,9 @@ export default function Contact() {
     e.preventDefault();
     setStatus('sending');
     setValidationErrors([]);
+    trackEvent(AnalyticsEvents.CONTACT_FORM_SUBMIT, {
+      timestamp: new Date().toISOString(),
+    });
 
     try {
       const response = await fetch('/api/contact', {
@@ -53,6 +57,7 @@ export default function Contact() {
         if (response.status === 400 && data.details) {
           setValidationErrors(data.details);
           setStatus('validation-error');
+          trackEvent(AnalyticsEvents.CONTACT_FORM_ERROR, { error: 'validation' });
           return;
         }
         throw new Error(data.error || 'Failed to send message');
@@ -60,8 +65,10 @@ export default function Contact() {
 
       setStatus('success');
       setFormData({ name: '', email: '', message: '' });
+      trackEvent(AnalyticsEvents.CONTACT_FORM_SUCCESS);
     } catch (error) {
       setStatus('error');
+      trackEvent(AnalyticsEvents.CONTACT_FORM_ERROR, { error: 'submission_failed' });
       console.error('Form submission error:', error);
     } finally {
       setTimeout(() => {

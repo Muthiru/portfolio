@@ -1,6 +1,7 @@
 "use client";
 
 import { useTypewriter } from '@/app/hooks/useTypewriter';
+import { trackEvent, AnalyticsEvents } from '@/app/lib/analytics';
 
 const TYPEWRITER_PHRASES = [
   'Full Stack Developer',
@@ -41,7 +42,12 @@ export default function Hero() {
         <div className="btn-group">
           <a href="#projects" className="btn btn-primary">View Featured Work</a>
           <a href="#contact" className="btn btn-outline">Contact Me</a>
-          <a href="/resume.pdf" className="btn btn-outline" download>
+          <a 
+            href="/resume.pdf" 
+            className="btn btn-outline" 
+            download
+            onClick={() => trackEvent(AnalyticsEvents.RESUME_DOWNLOAD)}
+          >
             Download CV
           </a>
         </div>
