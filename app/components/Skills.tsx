@@ -124,11 +124,11 @@ function SkillChip({ isDuplicate = false, skill }: { isDuplicate?: boolean; skil
 export default function Skills() {
   return (
     <section id="skills" className="fade-in">
-      <p className="section-label">02 skills</p>
-      <h2>Tech stack</h2>
+<p className="section-label">skills</p>
+        <h2>Tech stack</h2>
       <div className="divider"></div>
       <p className="skills-intro">
-        Tools I have used across production SaaS work, full-stack projects, QA workflows, cloud deployments, and AI/ML experiments.
+        Tools I use across production SaaS work, full-stack projects, and AI/ML experiments.
       </p>
       {skillGroups.map(group => (
         <div className="skills-group" key={group.label}>

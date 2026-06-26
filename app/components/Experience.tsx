@@ -1,8 +1,8 @@
 export default function Experience() {
   return (
     <section id="experience" className="fade-in">
-      <p className="section-label">05 experience</p>
-      <h2>My journey</h2>
+      <p className="section-label">experience</p>
+      <h2>Work Experience</h2>
       <div className="divider"></div>
       <div className="timeline">
         <div className="timeline-item">
@@ -10,16 +10,14 @@ export default function Experience() {
           <p className="timeline-role">Full Stack Developer (Part‑Time)</p>
           <p className="timeline-place">PRIOT Digital Systems · Maribor, Slovenia (Remote)</p>
           <p className="timeline-desc">
-            Promoted from Intern to Part‑Time Developer based on performance; shipped production
-            features for a SaaS inventory platform used by multiple business clients. Integrated
-            Google OAuth 2.0 and Stripe API payment workflows, writing server‑side routes and
-            running functional and edge‑case tests to confirm subscriptions, billing, and access
-            control behaved correctly. Built an automated PDF extraction pipeline using the
-            Gemini API and Firestore, validating data accuracy across hundreds of documents per
-            month and cutting manual processing time by ~60%. Rebuilt React.js components with
-            Tailwind CSS, testing layouts across mobile, tablet, and desktop breakpoints, and
-            contributed to code reviews and bug triage in an Agile sprint workflow.
+            Promoted from Intern to Part‑Time Developer based on performance. Key contributions:
           </p>
+          <ul className="timeline-list">
+            <li>Integrated Google OAuth 2.0 and Stripe API payment workflows, writing server‑side routes and running functional tests</li>
+            <li>Built automated PDF extraction pipeline using Gemini API and Firestore, cutting manual processing time by ~60%</li>
+            <li>Rebuilt React components with Tailwind CSS, testing layouts across mobile, tablet, and desktop breakpoints</li>
+            <li>Contributed to code reviews and bug triage in an Agile sprint workflow</li>
+          </ul>
         </div>
         <div className="timeline-item">
           <p className="timeline-date">Sep 2023 — Jun 2026</p>

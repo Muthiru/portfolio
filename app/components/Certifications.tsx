@@ -4,11 +4,11 @@ import { certifications } from '../data/certifications';
 export default function Certifications() {
   return (
     <section id="certifications" className="fade-in">
-      <p className="section-label">03 certifications</p>
-      <h2>Certifications</h2>
+      <p className="section-label">certifications</p>
+      <h2>Verified credentials</h2>
       <div className="divider"></div>
       <p className="certifications-intro">
-        A focused place for verified courses, certificates, and credentials that support my full-stack development work.
+        Verified courses and credentials that support my full-stack development work.
       </p>
       {certifications.length > 0 ? (
         <div className="certifications-grid">
