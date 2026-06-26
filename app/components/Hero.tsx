@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useTypewriter } from '@/app/hooks/useTypewriter';
+import { trackEvent, AnalyticsEvents } from '@/app/lib/analytics';
 
 const TYPEWRITER_PHRASES = [
   'Full Stack Developer',
@@ -10,38 +11,7 @@ const TYPEWRITER_PHRASES = [
 ];
 
 export default function Hero() {
-  const [phraseIndex, setPhraseIndex] = useState(0);
-  const [characterIndex, setCharacterIndex] = useState(1);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  useEffect(() => {
-    const phrase = TYPEWRITER_PHRASES[phraseIndex];
-    const isComplete = !isDeleting && characterIndex === phrase.length;
-    const isEmpty = isDeleting && characterIndex === 0;
-
-    const timeout = window.setTimeout(
-      () => {
-        if (isComplete) {
-          setIsDeleting(true);
-          return;
-        }
-
-        if (isEmpty) {
-          setIsDeleting(false);
-          setPhraseIndex(current => (current + 1) % TYPEWRITER_PHRASES.length);
-          setCharacterIndex(1);
-          return;
-        }
-
-        setCharacterIndex(current => current + (isDeleting ? -1 : 1));
-      },
-      isComplete ? 1400 : isDeleting ? 40 : 80,
-    );
-
-    return () => window.clearTimeout(timeout);
-  }, [characterIndex, isDeleting, phraseIndex]);
-
-  const text = TYPEWRITER_PHRASES[phraseIndex].slice(0, characterIndex);
+  const { text } = useTypewriter({ phrases: TYPEWRITER_PHRASES });
 
   return (
     <section id="hero">
@@ -72,7 +42,12 @@ export default function Hero() {
         <div className="btn-group">
           <a href="#projects" className="btn btn-primary">View Featured Work</a>
           <a href="#contact" className="btn btn-outline">Contact Me</a>
-          <a href="/resume.pdf" className="btn btn-outline" download>
+          <a 
+            href="/resume.pdf" 
+            className="btn btn-outline" 
+            download
+            onClick={() => trackEvent(AnalyticsEvents.RESUME_DOWNLOAD)}
+          >
             Download CV
           </a>
         </div>

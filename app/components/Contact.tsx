@@ -1,88 +1,66 @@
 "use client";
-import { useState, FormEvent, ChangeEvent } from 'react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { trackEvent, AnalyticsEvents } from '../lib/analytics';
 
-type FormStatus = 'idle' | 'sending' | 'success' | 'error' | 'validation-error';
+const contactSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters').max(100, 'Name is too long'),
+  email: z.string().email('Please enter a valid email address'),
+  message: z.string().min(10, 'Message must be at least 10 characters').max(5000, 'Message is too long'),
+});
 
-interface FormData {
-  name: string;
-  email: string;
-  message: string;
-}
+type ContactFormData = z.infer<typeof contactSchema>;
 
-interface ValidationError {
-  field: string;
-  message: string;
-}
+type FormStatus = 'idle' | 'sending' | 'success' | 'error';
 
 export default function Contact() {
   const [status, setStatus] = useState<FormStatus>('idle');
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    message: '',
+  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+    mode: 'onChange', // Real-time validation
   });
-  const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    // Clear errors when user starts typing
-    if (validationErrors.length > 0) {
-      setValidationErrors([]);
-    }
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = async (data: ContactFormData) => {
     setStatus('sending');
-    setValidationErrors([]);
+    trackEvent(AnalyticsEvents.CONTACT_FORM_SUBMIT, {
+      timestamp: new Date().toISOString(),
+    });
 
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(data),
       });
 
-      const data = await response.json();
+      const result = await response.json();
 
       if (!response.ok) {
         if (response.status === 429) {
           throw new Error('Too many requests. Please try again later.');
         }
-        if (response.status === 400 && data.details) {
-          setValidationErrors(data.details);
-          setStatus('validation-error');
-          return;
-        }
-        throw new Error(data.error || 'Failed to send message');
+        throw new Error(result.error || 'Failed to send message');
       }
 
       setStatus('success');
-      setFormData({ name: '', email: '', message: '' });
+      reset();
+      trackEvent(AnalyticsEvents.CONTACT_FORM_SUCCESS);
     } catch (error) {
       setStatus('error');
+      trackEvent(AnalyticsEvents.CONTACT_FORM_ERROR, { error: 'submission_failed' });
       console.error('Form submission error:', error);
     } finally {
       setTimeout(() => {
-        if (status === 'success' || status === 'error') {
-          setStatus('idle');
-        }
+        setStatus('idle');
       }, 5000);
-    }
-  };
-
-  const getButtonText = () => {
-    switch (status) {
-      case 'sending':
-        return 'Sending...';
-      case 'success':
-        return 'Message sent ✓';
-      case 'error':
-      case 'validation-error':
-        return 'Try again';
-      default:
-        return 'Send message';
     }
   };
 
@@ -96,15 +74,9 @@ export default function Contact() {
         return 'Message sent successfully! I will get back to you soon.';
       case 'error':
         return 'Something failed. You can retry or email me directly at njamadaniel3@gmail.com';
-      case 'validation-error':
-        return 'Please fix the errors below and try again.';
       default:
         return '';
     }
-  };
-
-  const getFieldError = (field: string) => {
-    return validationErrors.find(err => err.field === field)?.message;
   };
 
   return (
@@ -167,26 +139,23 @@ export default function Contact() {
         <div className="contact-form-card">
           <div className="contact-form-header">
             <h3>Send a message</h3>
-            <p className={status === 'success' ? 'text-success' : status === 'error' || status === 'validation-error' ? 'text-error' : ''}>
+            <p className={status === 'success' ? 'text-success' : status === 'error' ? 'text-error' : ''}>
               {getStatusMessage()}
             </p>
           </div>
-          <form className="contact-form-body" onSubmit={handleSubmit} noValidate>
+          <form className="contact-form-body" onSubmit={handleSubmit(onSubmit)} noValidate>
             <div className="form-group">
               <label className="form-label" htmlFor="name">Name</label>
               <input
                 className="form-input"
                 id="name"
-                name="name"
                 type="text"
                 placeholder="Your name"
-                value={formData.name}
-                onChange={handleInputChange}
-                required
-                disabled={status === 'sending'}
+                disabled={isSubmitting}
+                {...register('name')}
               />
-              {getFieldError('name') && (
-                <span className="form-error">{getFieldError('name')}</span>
+              {errors.name && (
+                <span className="form-error">{errors.name.message}</span>
               )}
             </div>
             <div className="form-group">
@@ -194,16 +163,13 @@ export default function Contact() {
               <input
                 className="form-input"
                 id="email"
-                name="email"
                 type="email"
                 placeholder="your@email.com"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-                disabled={status === 'sending'}
+                disabled={isSubmitting}
+                {...register('email')}
               />
-              {getFieldError('email') && (
-                <span className="form-error">{getFieldError('email')}</span>
+              {errors.email && (
+                <span className="form-error">{errors.email.message}</span>
               )}
             </div>
             <div className="form-group">
@@ -211,19 +177,16 @@ export default function Contact() {
               <textarea
                 className="form-textarea"
                 id="message"
-                name="message"
                 placeholder="Tell me about the role, project, timeline, or problem."
-                value={formData.message}
-                onChange={handleInputChange}
-                required
-                disabled={status === 'sending'}
+                disabled={isSubmitting}
+                {...register('message')}
               />
-              {getFieldError('message') && (
-                <span className="form-error">{getFieldError('message')}</span>
+              {errors.message && (
+                <span className="form-error">{errors.message.message}</span>
               )}
             </div>
-            <button className="form-submit" type="submit" disabled={status === 'sending'}>
-              {getButtonText()}
+            <button className="form-submit" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Sending...' : status === 'success' ? 'Message sent ✓' : 'Send message'}
             </button>
           </form>
         </div>

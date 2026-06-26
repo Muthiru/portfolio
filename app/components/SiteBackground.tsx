@@ -86,9 +86,35 @@ export default function SiteBackground() {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (mediaQuery.matches) return;
 
+    let isAnimationPaused = false;
+
+    const pauseAnimation = () => {
+      if (!isAnimationPaused && animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+        isAnimationPaused = true;
+      }
+    };
+
+    const resumeAnimation = () => {
+      if (isAnimationPaused) {
+        isAnimationPaused = false;
+        drawParticles();
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        pauseAnimation();
+      } else {
+        resumeAnimation();
+      }
+    };
+
     resize();
     initParticles();
     drawParticles();
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     const handleResize = () => {
       if (resizeTimeoutRef.current) window.clearTimeout(resizeTimeoutRef.current);
@@ -102,6 +128,7 @@ export default function SiteBackground() {
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
       if (resizeTimeoutRef.current) window.clearTimeout(resizeTimeoutRef.current);
     };
