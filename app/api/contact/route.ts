@@ -11,7 +11,8 @@ const contactSchema = z.object({
   message: z.string().min(10, 'Message must be at least 10 characters'),
 });
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend only when API key is available (not during build)
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function POST(request: NextRequest) {
   try {
@@ -51,6 +52,15 @@ export async function POST(request: NextRequest) {
     }
 
     const { name, email, message } = validation.data;
+
+    // Check if Resend is configured
+    if (!resend) {
+      console.error('Resend API key not configured');
+      return NextResponse.json(
+        { error: 'Email service not configured. Please contact the administrator.' },
+        { status: 503 }
+      );
+    }
 
     // Send email via Resend
     await resend.emails.send({
