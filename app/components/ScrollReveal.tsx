@@ -10,12 +10,14 @@ export default function ScrollReveal() {
     
     if (elements.length === 0) return;
 
+    const observedSet = observedElementsRef.current;
+
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
-          if (entry.isIntersecting && !observedElementsRef.current.has(entry.target)) {
+          if (entry.isIntersecting && !observedSet.has(entry.target)) {
             entry.target.classList.add('visible');
-            observedElementsRef.current.add(entry.target);
+            observedSet.add(entry.target);
             observer.unobserve(entry.target);
           }
         });
@@ -27,7 +29,7 @@ export default function ScrollReveal() {
 
     return () => {
       observer.disconnect();
-      observedElementsRef.current.clear();
+      observedSet.clear();
     };
   }, []);
 
