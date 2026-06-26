@@ -22,7 +22,7 @@ const githubIcon = (
   </svg>
 );
 
-function ProjectPreview({ project }: { project: Project }) {
+function ProjectPreview({ project, showFullImage }: { project: Project; showFullImage?: boolean }) {
   const [imageFailed, setImageFailed] = useState(false);
 
   if (project.screenshot && !imageFailed) {
@@ -33,8 +33,9 @@ function ProjectPreview({ project }: { project: Project }) {
           alt={project.screenshotAlt ?? `${project.name} screenshot`}
           fill
           loading="lazy"
-          sizes="(max-width: 700px) 100vw, 280px"
+          sizes="(max-width: 700px) 100vw, (min-width: 1200px) 400px, 350px"
           className="project-screenshot-image"
+          style={{ objectFit: showFullImage ? 'contain' : 'cover' }}
           onError={() => setImageFailed(true)}
         />
       </figure>
@@ -241,7 +242,7 @@ export default function Projects() {
             <button className="case-study-close" type="button" aria-label="Close case study" onClick={() => setActiveProject(null)}>
               ×
             </button>
-            <ProjectPreview project={activeProject} />
+            <ProjectPreview project={activeProject} showFullImage />
             <div className="case-study-content">
               <p className="section-label">{activeProject.role}</p>
               <h3 id="case-study-title">{activeProject.name}</h3>
