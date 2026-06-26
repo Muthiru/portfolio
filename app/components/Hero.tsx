@@ -49,7 +49,7 @@ export default function Hero() {
         <p className="hero-greeting">hello, world 👋</p>
         <h1 className="hero-name">Daniel Njama</h1>
         <p className="hero-title">
-          <span id="typewriter" data-testid="typewriter">{text}</span>
+          <span id="typewriter">{text}</span>
           <span className="cursor"></span>
         </p>
         <p className="hero-desc">
