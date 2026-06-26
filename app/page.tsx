@@ -11,7 +11,7 @@ import ScrollReveal from './components/ScrollReveal';
 
 const Certifications = dynamic(() => import('./components/Certifications'), {
   loading: () => (
-    <section id="certifications" className="fade-in">
+    <section id="certifications" className="fade-in" suppressHydrationWarning>
       <div className="certifications-grid" style={{ minHeight: '300px' }}>
         {[1, 2, 3].map(i => (
           <article key={i} className="certification-card" style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '12px' }}>
@@ -29,7 +29,7 @@ const Certifications = dynamic(() => import('./components/Certifications'), {
 
 const Projects = dynamic(() => import('./components/Projects'), {
   loading: () => (
-    <section id="projects" className="fade-in">
+    <section id="projects" className="fade-in" suppressHydrationWarning>
       <div className="spotlight-grid" style={{ minHeight: '400px' }}>
         {[1, 2].map(i => (
           <article key={i} className="spotlight-card" style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '12px', minHeight: '400px' }}>
