@@ -7,7 +7,7 @@ const profilePhoto = '/Daniel.jpeg';
 export default function About() {
   return (
     <section id="about" className="fade-in">
-      <p className="section-label">01 about</p>
+      <p className="section-label">about</p>
       <h2>Who I am</h2>
       <div className="divider"></div>
       <div className="about-grid">
@@ -21,17 +21,15 @@ export default function About() {
               automation.
             </p>
             <p>
-              The work I enjoy most sits where product, data, and reliability meet. I like taking
-              an unclear requirement, shaping the data and backend behavior, then connecting it to
-              a clean user flow. Outside professional work, that shows up in projects like a
-              livestock management platform, a trading automation project, and computer-vision
-              experiments with validation built in.
+              The work I enjoy most sits where product, data, and reliability meet. 
+              I like taking unclear requirements, shaping the data and backend behavior, 
+              then connecting it to a clean user flow.
             </p>
           </div>
           <div className="about-facts">
             <div className="fact-chip"><span>📍</span>Lublin, Poland</div>
             <div className="fact-chip"><span>🎓</span>BSc Computer Science, June 2026</div>
-            <div className="fact-chip"><span>💼</span>Open to work</div>
+            <div className="fact-chip"><span>💼</span>Seeking full-time roles</div>
             <div className="fact-chip"><span>📧</span>njamadaniel3@gmail.com</div>
           </div>
           <div className="value-grid">

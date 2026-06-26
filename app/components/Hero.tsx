@@ -16,14 +16,15 @@ export default function Hero() {
   return (
     <section id="hero">
       <div className="hero-content">
-        <p className="hero-greeting">hello, world 👋</p>
+        <p className="hero-greeting">Hello, I&apos;m Daniel 👋</p>
         <h1 className="hero-name">Daniel Njama</h1>
         <p className="hero-title">
           <span id="typewriter">{text}</span>
           <span className="cursor"></span>
         </p>
         <p className="hero-desc">
-          I turn product ideas into working full-stack software: interfaces people can use, backend logic that holds up, integrations that behave correctly, and deployments that are ready to review. QA is part of how I build, but my main focus is designing and shipping complete web applications.
+          I turn product ideas into working full-stack software: interfaces people can use, 
+          backend logic that holds up, and deployments that are ready to review.
         </p>
         <div className="hero-proof-grid" aria-label="Career highlights">
           <div className="hero-proof">
@@ -48,7 +49,7 @@ export default function Hero() {
             download
             onClick={() => trackEvent(AnalyticsEvents.RESUME_DOWNLOAD)}
           >
-            Download CV
+            Download Resume
           </a>
         </div>
       </div>
