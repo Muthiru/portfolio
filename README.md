@@ -2,6 +2,19 @@
 
 Personal developer portfolio built with Next.js, React, and TypeScript.
 
+[![CI](https://github.com/Muthiru/portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/Muthiru/portfolio/actions/workflows/ci.yml)
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://daniel-njama.vercel.app)
+
+## Features
+
+- 🚀 **Modern Stack**: Next.js 16, React 19, TypeScript
+- 🔒 **Secure Contact Form**: Server-side validation, rate limiting, Resend integration
+- 📱 **Responsive Design**: Mobile-first, works on all devices
+- ♿ **Accessible**: ARIA labels, keyboard navigation, reduced motion support
+- ⚡ **Performance Optimized**: Lazy loading, image optimization, code splitting
+- 🎨 **Dark Theme**: Clean, professional design with CSS variables
+- 📊 **Analytics**: Vercel Analytics integration
+
 ## Structure
 
 ```text
@@ -15,6 +28,8 @@ app/
 public/
   favicon.svg
   resume.pdf
+.github/
+  workflows/       CI/CD pipelines
 ```
 
 ## Prerequisites
@@ -22,6 +37,7 @@ public/
 - Node.js 18.17 or later
 - npm or yarn
 - Resend API key (for contact form)
+- Git (for version control)
 
 ## Setup
 
@@ -73,6 +89,26 @@ npm run dev      # Start development server
 npm run build    # Build for production
 npm run start    # Start production server
 npm run lint     # Run ESLint
+npm run typecheck # Run TypeScript check
+npm test         # Run unit tests (Vitest)
+npm run test:e2e # Run E2E tests (Playwright)
+```
+
+## Testing
+
+### Unit Tests
+
+```bash
+npm test              # Run tests
+npm run test:ui       # Run tests with UI
+npm run test:coverage # Run tests with coverage report
+```
+
+### E2E Tests
+
+```bash
+npm run test:e2e      # Run Playwright tests
+npm run test:e2e:ui   # Run with UI
 ```
 
 ## Deployment
@@ -94,6 +130,15 @@ Make sure to add all environment variables in your Vercel project settings:
 - Go to Project Settings → Environment Variables
 - Add each variable from `.env.example`
 
+### Continuous Integration
+
+CI pipeline runs on every push and PR:
+- ✅ ESLint checks
+- ✅ TypeScript type checking
+- ✅ Production build verification
+
+Configure branch protection rules in GitHub to require CI checks before merging.
+
 ## Contact Form
 
 The contact form uses:
@@ -104,23 +149,64 @@ The contact form uses:
 
 Emails are sent to: `njamadaniel3@gmail.com`
 
-## Production Notes
+### API Rate Limiting
 
-- One-page scrolling site optimized for quick recruiter scanning
-- Project data from `app/data/projects.ts`
-- Certifications from `app/data/certifications.ts`
-- Contact form secured with server-side validation
-- Rate limiting prevents spam
-- `public/resume.pdf` is downloadable from hero section
+- Max 5 submissions per hour per IP address
+- Prevents spam and abuse
+- Returns 429 status code when limit exceeded
+
+### Form Validation
+
+Server-side validation ensures:
+- Name: Required, 2-100 characters
+- Email: Valid email format
+- Message: Required, 10-5000 characters
+
+## Performance
+
+Optimized for speed:
+- **Lazy Loading**: Certifications and Projects components load on demand
+- **Image Optimization**: WebP/AVIF formats, responsive sizes
+- **Code Splitting**: Reduced initial bundle size
+- **Canvas Optimization**: Animation pauses on tab hide (saves battery)
+
+## Accessibility
+
+- ✅ Skip links for keyboard navigation
+- ✅ ARIA labels on interactive elements
+- ✅ Reduced motion support
+- ✅ Semantic HTML structure
+- ✅ Color contrast compliance
 
 ## Tech Stack
 
 - **Framework**: Next.js 16
-- **Language**: TypeScript
+- **Language**: TypeScript 5
+- **UI**: React 19
 - **Styling**: CSS Modules + CSS Variables
 - **Email**: Resend
 - **Validation**: Zod
+- **Testing**: Vitest (unit), Playwright (E2E)
+- **CI/CD**: GitHub Actions
 - **Deployment**: Vercel
+- **Analytics**: Vercel Analytics
+
+## Development Workflow
+
+1. Create feature branch: `git checkout -b feature/your-feature`
+2. Make changes and commit: `git commit -m "Add feature"`
+3. Push to GitHub: `git push origin feature/your-feature`
+4. Create Pull Request
+5. CI checks run automatically
+6. Merge after approval
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Submit a pull request
 
 ## License
 

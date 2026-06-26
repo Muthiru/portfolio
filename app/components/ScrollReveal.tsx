@@ -1,15 +1,23 @@
 "use client";
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function ScrollReveal() {
+  const observedElementsRef = useRef<Set<Element>>(new Set());
+
   useEffect(() => {
-    const elements = document.querySelectorAll('.fade-in');
+    const elements = document.querySelectorAll<HTMLElement>('.fade-in');
+    
+    if (elements.length === 0) return;
+
+    const observedSet = observedElementsRef.current;
+
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && !observedSet.has(entry.target)) {
             entry.target.classList.add('visible');
+            observedSet.add(entry.target);
             observer.unobserve(entry.target);
           }
         });
@@ -21,6 +29,7 @@ export default function ScrollReveal() {
 
     return () => {
       observer.disconnect();
+      observedSet.clear();
     };
   }, []);
 

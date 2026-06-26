@@ -14,8 +14,18 @@ const navItems = [
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleNavClick = () => {
+    setIsOpen(false);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      setIsOpen(false);
+    }
+  };
+
   return (
-    <nav className={isOpen ? 'nav-open' : ''}>
+    <nav className={isOpen ? 'nav-open' : ''} onKeyDown={handleKeyDown}>
       <a className="nav-logo" href="#hero" aria-label="Daniel Njama home" onClick={() => setIsOpen(false)}>
         <span className="nav-logo-mark">DN</span>
         <span className="nav-logo-text">danielnjama</span>
@@ -32,10 +42,15 @@ export default function Nav() {
         <span></span>
         <span></span>
       </button>
-      <ul className="nav-links" id="site-navigation">
+      <ul className="nav-links" id="site-navigation" role="menu" aria-label="Main navigation">
         {navItems.map(item => (
-          <li key={item.href}>
-            <a href={item.href} onClick={() => setIsOpen(false)}>
+          <li key={item.href} role="none">
+            <a 
+              href={item.href} 
+              role="menuitem"
+              tabIndex={isOpen ? 0 : -1}
+              onClick={handleNavClick}
+            >
               {item.label}
             </a>
           </li>
