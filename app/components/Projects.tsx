@@ -6,7 +6,7 @@ import { Project, projects } from '../data/projects';
 import { trackEvent, AnalyticsEvents } from '@/app/lib/analytics';
 
 const filters = [
-  { label: 'Latest', value: 'latest' },
+  { label: 'Recent work', value: 'latest' },
   { label: 'All', value: 'all' },
   { label: 'Featured', value: 'featured' },
   { label: 'Web', value: 'web' },
@@ -100,7 +100,7 @@ export default function Projects() {
 
   return (
     <section id="projects" className="fade-in">
-      <p className="section-label">04 projects</p>
+      <p className="section-label">projects</p>
       <h2>Latest projects</h2>
       <div className="divider"></div>
       <p className="projects-intro">
@@ -229,7 +229,7 @@ export default function Projects() {
             onClick={() => setShowOtherProjects(current => !current)}
             type="button"
           >
-            {showOtherProjects ? 'Show fewer projects' : `Open ${hiddenProjectsCount} other projects`}
+            {showOtherProjects ? 'Show fewer projects' : `Show ${hiddenProjectsCount} more projects`}
           </button>
           <a href="https://github.com/Muthiru?tab=repositories" className="project-archive-link" target="_blank" rel="noopener noreferrer">
             View GitHub archive

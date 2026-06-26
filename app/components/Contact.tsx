@@ -67,7 +67,7 @@ export default function Contact() {
   const getStatusMessage = () => {
     switch (status) {
       case 'idle':
-        return 'Tell me what you are building, hiring for, or trying to improve.';
+        return 'Tell me about your project, role, or challenge.';
       case 'sending':
         return 'Sending your message...';
       case 'success':
@@ -81,7 +81,7 @@ export default function Contact() {
 
   return (
     <section id="contact" className="fade-in">
-      <p className="section-label">06 contact</p>
+      <p className="section-label">contact</p>
       <h2>Let&apos;s build something useful</h2>
       <div className="divider"></div>
       <div className="contact-grid">
