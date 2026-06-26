@@ -1,25 +1,74 @@
 "use client";
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
+
+type FormStatus = 'idle' | 'sending' | 'success' | 'error' | 'validation-error';
+
+interface FormData {
+  name: string;
+  email: string;
+  message: string;
+}
+
+interface ValidationError {
+  field: string;
+  message: string;
+}
+
 export default function Contact() {
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<FormStatus>('idle');
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    email: '',
+    message: '',
+  });
+  const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    // Clear errors when user starts typing
+    if (validationErrors.length > 0) {
+      setValidationErrors([]);
+    }
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget;
     setStatus('sending');
+    setValidationErrors([]);
+
     try {
-      const response = await fetch(form.action, {
+      const response = await fetch('/api/contact', {
         method: 'POST',
-        body: new FormData(form),
-        headers: { Accept: 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       });
-      if (!response.ok) throw new Error('failed');
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 429) {
+          throw new Error('Too many requests. Please try again later.');
+        }
+        if (response.status === 400 && data.details) {
+          setValidationErrors(data.details);
+          setStatus('validation-error');
+          return;
+        }
+        throw new Error(data.error || 'Failed to send message');
+      }
+
       setStatus('success');
-      form.reset();
-    } catch {
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
       setStatus('error');
+      console.error('Form submission error:', error);
     } finally {
-      setTimeout(() => setStatus('idle'), 3000);
+      setTimeout(() => {
+        if (status === 'success' || status === 'error') {
+          setStatus('idle');
+        }
+      }, 5000);
     }
   };
 
@@ -28,20 +77,35 @@ export default function Contact() {
       case 'sending':
         return 'Sending...';
       case 'success':
-        return 'Message sent';
+        return 'Message sent ✓';
       case 'error':
+      case 'validation-error':
         return 'Try again';
       default:
         return 'Send message';
     }
   };
 
-  const statusMessage = {
-    idle: 'Tell me what you are building, hiring for, or trying to improve.',
-    sending: 'Sending your message...',
-    success: 'Message sent. I will get back to you soon.',
-    error: 'Something failed. You can retry or email me directly.',
-  }[status];
+  const getStatusMessage = () => {
+    switch (status) {
+      case 'idle':
+        return 'Tell me what you are building, hiring for, or trying to improve.';
+      case 'sending':
+        return 'Sending your message...';
+      case 'success':
+        return 'Message sent successfully! I will get back to you soon.';
+      case 'error':
+        return 'Something failed. You can retry or email me directly at njamadaniel3@gmail.com';
+      case 'validation-error':
+        return 'Please fix the errors below and try again.';
+      default:
+        return '';
+    }
+  };
+
+  const getFieldError = (field: string) => {
+    return validationErrors.find(err => err.field === field)?.message;
+  };
 
   return (
     <section id="contact" className="fade-in">
@@ -103,26 +167,64 @@ export default function Contact() {
         <div className="contact-form-card">
           <div className="contact-form-header">
             <h3>Send a message</h3>
-            <p>{statusMessage}</p>
+            <p className={status === 'success' ? 'text-success' : status === 'error' || status === 'validation-error' ? 'text-error' : ''}>
+              {getStatusMessage()}
+            </p>
           </div>
-          <form className="contact-form-body" id="contact-form" onSubmit={handleSubmit}
-                action="https://formsubmit.co/njamadaniel3@gmail.com" method="POST">
-            <input type="hidden" name="_subject" value="New message from portfolio site"/>
-            <input type="hidden" name="_template" value="table"/>
-            <input type="hidden" name="_captcha" value="false"/>
+          <form className="contact-form-body" onSubmit={handleSubmit} noValidate>
             <div className="form-group">
               <label className="form-label" htmlFor="name">Name</label>
-              <input className="form-input" id="name" name="name" type="text" placeholder="Your name" required/>
+              <input
+                className="form-input"
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Your name"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+                disabled={status === 'sending'}
+              />
+              {getFieldError('name') && (
+                <span className="form-error">{getFieldError('name')}</span>
+              )}
             </div>
             <div className="form-group">
               <label className="form-label" htmlFor="email">Email</label>
-              <input className="form-input" id="email" name="email" type="email" placeholder="your@email.com" required/>
+              <input
+                className="form-input"
+                id="email"
+                name="email"
+                type="email"
+                placeholder="your@email.com"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+                disabled={status === 'sending'}
+              />
+              {getFieldError('email') && (
+                <span className="form-error">{getFieldError('email')}</span>
+              )}
             </div>
             <div className="form-group">
               <label className="form-label" htmlFor="message">Message</label>
-              <textarea className="form-textarea" id="message" name="message" placeholder="Tell me about the role, project, timeline, or problem." required/>
+              <textarea
+                className="form-textarea"
+                id="message"
+                name="message"
+                placeholder="Tell me about the role, project, timeline, or problem."
+                value={formData.message}
+                onChange={handleInputChange}
+                required
+                disabled={status === 'sending'}
+              />
+              {getFieldError('message') && (
+                <span className="form-error">{getFieldError('message')}</span>
+              )}
             </div>
-            <button className="form-submit" type="submit" disabled={status === 'sending'}>{getButtonText()}</button>
+            <button className="form-submit" type="submit" disabled={status === 'sending'}>
+              {getButtonText()}
+            </button>
           </form>
         </div>
       </div>
