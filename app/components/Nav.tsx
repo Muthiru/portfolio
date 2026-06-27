@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from 'react';
+import { trackEvent, AnalyticsEvents } from '@/app/lib/analytics';
 
 const navItems = [
   { href: '#about', label: 'about' },
-  { href: '#skills', label: 'skills' },
-  { href: '#certifications', label: 'certifications' },
-  { href: '#projects', label: 'projects' },
+  { href: '#work', label: 'work' },
   { href: '#experience', label: 'experience' },
   { href: '#contact', label: 'contact' },
 ];
@@ -28,8 +27,34 @@ export default function Nav() {
     <nav className={isOpen ? 'nav-open' : ''} onKeyDown={handleKeyDown}>
       <a className="nav-logo" href="#hero" aria-label="Daniel Njama home" onClick={() => setIsOpen(false)}>
         <span className="nav-logo-mark">DN</span>
-        <span className="nav-logo-text">danielnjama</span>
       </a>
+      <div className="nav-right">
+        <ul className="nav-links" id="site-navigation" role="menu" aria-label="Main navigation">
+          {navItems.map(item => (
+            <li key={item.href} role="none">
+              <a 
+                href={item.href} 
+                role="menuitem"
+                tabIndex={isOpen ? 0 : -1}
+                onClick={handleNavClick}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <a 
+          href="/resume.pdf" 
+          className="nav-resume-btn"
+          download
+          onClick={() => {
+            handleNavClick();
+            trackEvent(AnalyticsEvents.RESUME_DOWNLOAD);
+          }}
+        >
+          Resume
+        </a>
+      </div>
       <button
         className="nav-toggle"
         type="button"
@@ -42,20 +67,6 @@ export default function Nav() {
         <span></span>
         <span></span>
       </button>
-      <ul className="nav-links" id="site-navigation" role="menu" aria-label="Main navigation">
-        {navItems.map(item => (
-          <li key={item.href} role="none">
-            <a 
-              href={item.href} 
-              role="menuitem"
-              tabIndex={isOpen ? 0 : -1}
-              onClick={handleNavClick}
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
-      </ul>
     </nav>
   );
 }
