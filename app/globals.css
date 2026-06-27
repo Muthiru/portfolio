@@ -1184,6 +1184,11 @@ footer a:hover {
   
   section:first-of-type {
     padding-top: 100px;
+    margin-top: 0;
+  }
+  
+  #hero {
+    padding-top: 80px;
   }
   
   .about-grid {
