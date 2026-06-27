@@ -112,9 +112,9 @@ const skillGroups: SkillGroup[] = [
   },
 ];
 
-function SkillChip({ isDuplicate = false, skill }: { isDuplicate?: boolean; skill: Skill }) {
+function SkillChip({ skill }: { skill: Skill }) {
   return (
-    <div className="skill-item" aria-hidden={isDuplicate || undefined}>
+    <div className="skill-item">
       {skill.icon && <i className={skill.icon}></i>}
       {skill.name}
     </div>
@@ -123,26 +123,21 @@ function SkillChip({ isDuplicate = false, skill }: { isDuplicate?: boolean; skil
 
 export default function Skills() {
   return (
-    <section id="skills" className="fade-in">
-<p className="section-label">skills</p>
-        <h2>Tech stack</h2>
+    <section id="skills" className="fade-in" suppressHydrationWarning>
+      <p className="section-label">skills</p>
+      <h2>Tech stack</h2>
       <div className="divider"></div>
-      <p className="skills-intro">
-        Tools I use across production SaaS work, full-stack projects, and AI/ML experiments.
-      </p>
+    
       {skillGroups.map(group => (
         <div className="skills-group" key={group.label}>
           <p className="skills-group-label">{group.label}</p>
-          <div className="skills-marquee">
-            <div className="skills-track">
-              {[...group.skills, ...group.skills].map((skill, index) => (
-                <SkillChip
-                  isDuplicate={index >= group.skills.length}
-                  skill={skill}
-                  key={`${group.label}-${skill.name}-${index}`}
-                />
-              ))}
-            </div>
+          <div className="skills-list">
+            {group.skills.map((skill) => (
+              <SkillChip
+                skill={skill}
+                key={`${group.label}-${skill.name}`}
+              />
+            ))}
           </div>
         </div>
       ))}

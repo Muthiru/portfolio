@@ -22,10 +22,9 @@ export type Project = {
 };
 
 export const projects: Project[] = [
-  {
+{
     name: 'LiveStocka',
-    description:
-      'Comprehensive cattle tracking and management system for livestock profiling, health records, production tracking, breeding data, and farm dashboards.',
+    description: "Turns scattered paper and spreadsheet livestock records into one searchable system for health history, breeding lineage, and farm-management workflows. I designed the data model around the actual relationships a farm needs to track - an animal's lineage, vet visits, and breeding history all reference each other instead of living in separate disconnected sheets.",
     language: 'JavaScript',
     repoUrl: 'https://github.com/Muthiru/LiveStocka',
     demoUrl: 'https://livestocka.vercel.app',
@@ -37,7 +36,7 @@ export const projects: Project[] = [
     stack: ['Nuxt 3', 'Vue 3', 'TypeScript', 'Supabase', 'PostgreSQL', 'Tailwind CSS', 'Edge Functions', 'Vercel'],
     metric: 'Full-stack SaaS-style build',
     problem: 'Farm data is often split across notebooks, spreadsheets, and memory, making animal history hard to audit or compare.',
-    solution: 'Built a typed web platform with structured cattle profiles, health records, milk production, breeding detection, lineage, auth, and dashboard views.',
+    solution: 'Designed the data model around actual farm relationships - animal lineage, vet visits, and breeding history all reference each other instead of existing in separate sheets. Built a typed web platform with structured cattle profiles, health records, milk production, breeding detection, lineage, auth, and dashboard views.',
     impact: 'Turns scattered animal records into searchable health, production, breeding, lineage, and farm-management workflows.',
     outcomes: [
       'Designed a PostgreSQL schema with Row Level Security policies to isolate each farm account.',
@@ -234,8 +233,6 @@ export const projects: Project[] = [
       'Implemented responsive design for mobile and desktop travelers.',
     ],
     preview: 'wellness',
-    screenshot: '/Amboseli-Trial.png',
-    screenshotAlt: 'Amboseli National Park tourism website screenshot',
   },
   {
     name: 'Daniel-Cipher',
