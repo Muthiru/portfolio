@@ -2,7 +2,7 @@
 import Nav from './components/Nav';
 import Hero from './components/Hero';
 import About from './components/About';
-import Skills from './components/Skills';
+import HowIWork from './components/HowIWork';
 import dynamic from 'next/dynamic';
 import Experience from './components/Experience';
 import Contact from './components/Contact';
@@ -52,11 +52,11 @@ export default function Home() {
       <Nav />
       <main id="main">
         <Hero />
+        <HowIWork />
         <About />
-        <Skills />
-        <Certifications />
         <Projects />
         <Experience />
+        <Certifications />
         <Contact />
       </main>
       <Footer />
