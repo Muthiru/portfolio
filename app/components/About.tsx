@@ -13,7 +13,7 @@ export default function About() {
         <div>
           <div className="about-text">
             <p>
-              I completed my BSc in Computer Science at John Paul II Catholic University of Lubin. Alongside my degree, I&apos;ve been shipping production work as a full-stack developer at PRIOT Digital Systems - SaaS workflows, API integrations, billing, and document automation.
+              I completed my BSc in Computer Science at John Paul II Catholic University of Lubin. Alongside my degree, I was shipping production work as a full-stack developer at PRIOT Digital Systems - SaaS workflows, API integrations, billing, and document automation.
             </p>
             <p>
               Outside coursework and client work, I build things that need to hold up: a livestock management platform, a live-market trading bot,e-commerce websites and computer vision experiments. I&apos;d rather learn what a problem actually needs than reach for the first familiar tool.

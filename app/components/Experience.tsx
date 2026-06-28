@@ -19,7 +19,7 @@ const experiences = [
     role: 'BSc Computer Science',
     company: 'John Paul II Catholic University of Lublin',
     location: 'Poland',
-    description: 'Completed a Computer Science degree focused on full‑stack development, software engineering, and applied AI/ML alongside part‑time professional development work. Built a portfolio of solo projects spanning web platforms, automated trading systems, and computer vision.',
+    description: 'Completed a Computer Science degree focused on full‑stack development, software engineering, and applied AI/ML alongside part‑time professional development work. Built a portfolio of solo projects spanning web platforms, automated trading systems and computer vision.',
     achievements: []
   }
 ];
