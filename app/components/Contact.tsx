@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { trackEvent, AnalyticsEvents } from '../lib/analytics';
 
 const contactSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters').max(100, 'Name is too long'),
+  name: z.string().min(4, 'Name must be at least 4 characters').max(100, 'Name is too long'),
   email: z.string().email('Please enter a valid email address'),
   message: z.string().min(10, 'Message must be at least 10 characters').max(5000, 'Message is too long'),
 });
